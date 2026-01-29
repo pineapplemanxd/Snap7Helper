@@ -40,6 +40,7 @@ project_root/
 ├── CMakeLists.txt
 ├── main.cpp
 ├── Snap7Helper.h      <-- The Framework
+├── helper.h           <-- Helper Functions
 ├── snap7.cpp          <-- Snap7 Source
 ├── snap7.h            <-- Snap7 Header
 ├── snap7.dll          <-- Shared Library
@@ -88,3 +89,4 @@ License
 
 
 This framework is provided "as-is". It requires the Snap7 Library to function.
+
