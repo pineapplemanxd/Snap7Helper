@@ -80,18 +80,11 @@ To allow this library to communicate with your PLC, you must follow these steps:
 
     Enable PUT/GET: Go to Device Configuration > Select CPU > Properties > Protection & Security > Connection Mechanisms and check "Permit access with PUT/GET communication".
 
-    Disable Optimized Access: Right-click your Data Block (DB) > Properties > Attributes and uncheck "Optimized block access".
-
     Network: Ensure your PC is on the same subnet as the PLC (e.g., PC: 192.168.60.10, PLC: 192.168.60.201).
 
-Addressing Notes
 
-    Alignment: Always use even byte numbers for Integers (%MW0, %MW2, %MW4) to avoid memory overlapping.
-
-    Real/Float: Real values occupy 4 bytes. If you use %MD10, the next available address is %MD14.
-
-    Inputs: When using Factory IO, ensure the driver is set to "Internal Bits" if you intend to write to %I addresses from your C++ code.
 
 License
+
 
 This framework is provided "as-is". It requires the Snap7 Library to function.
