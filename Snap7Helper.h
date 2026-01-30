@@ -33,6 +33,19 @@ inline void My_SetIntAt(void* Buffer, int Pos, int16_t Value) {
     p[1] = (uint8_t)(Value & 0xFF);
 }
 
+inline int32_t My_GetDIntAt(void* Buffer, int Pos) {
+    uint8_t* p = (uint8_t*)Buffer + Pos;
+    return (int32_t)((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
+}
+
+inline void My_SetDIntAt(void* Buffer, int Pos, int32_t Value) {
+    uint8_t* p = (uint8_t*)Buffer + Pos;
+    p[0] = (uint8_t)((Value >> 24) & 0xFF);
+    p[1] = (uint8_t)((Value >> 16) & 0xFF);
+    p[2] = (uint8_t)((Value >> 8) & 0xFF);
+    p[3] = (uint8_t)(Value & 0xFF);
+}
+
 inline void My_SetRealAt(void* Buffer, int Pos, float Value) {
     union {
         float f;
@@ -167,6 +180,29 @@ public:
         My_SetIntAt(buffer, 0, value);
 
         int res = Client->WriteArea(area, db, byt, 2, S7WLByte, buffer);
+        return res == 0;
+    }
+    // --- DINT (32-bit Integer) ---
+    int32_t GetDInt(std::string address) {
+        int area, db, byt;
+        // Parse address (supports %MD10, %DB1.DBD10, etc.)
+        if (!ParseWordAddress(address, area, db, byt)) return 0;
+
+        byte buffer[4];
+        // Read 4 bytes from the PLC
+        int res = Client->ReadArea(area, db, byt, 4, S7WLByte, buffer);
+
+        if (res == 0) return My_GetDIntAt(buffer, 0);
+        return 0;
+    }
+
+    bool WriteDInt(std::string address, int32_t value) {
+        int area, db, byt;
+        if (!ParseWordAddress(address, area, db, byt)) return false;
+
+        byte buffer[4];
+        My_SetDIntAt(buffer, 0, value);
+        int res = Client->WriteArea(area, db, byt, 4, S7WLByte, buffer);
         return res == 0;
     }
 };
